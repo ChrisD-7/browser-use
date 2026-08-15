@@ -48,15 +48,6 @@ dependencies = [
     "markdownify>=1.2.0",
     "python-docx>=1.2.0",
 ]
-# google-api-core: only used for Google LLM APIs
-# pyperclip: only used for examples that use copy/paste
-# pyobjc: only used to get screen resolution on macOS
-# screeninfo: only used to get screen resolution on Linux/Windows
-# markdownify: used for page text content extraction for passing to LLM
-# openai: datalib,voice-helpers are actually NOT NEEDED but openai produces noisy errors on exit without them TODO: fix
-# rich: used for terminal formatting and styling in CLI
-# click: used for command-line argument parsing
-# textual: used for terminal UI
 
 [project.optional-dependencies]
 cli = [
@@ -81,11 +72,8 @@ video = [
 ]
 examples = [
     "agentmail==0.0.59",
-    # botocore: only needed for Bedrock Claude boto3 examples/models/bedrock_claude.py
     "botocore>=1.37.23",
     "imgcat>=0.6.0",
-    # "stagehand-py>=0.3.6",
-    # "browserbase>=0.4.0",
     "langchain-openai>=0.3.26",
 ]
 eval = [
@@ -100,11 +88,26 @@ cli-oci = [
 all = [
     "browser-use[cli,examples,aws,oci]",
 ]
-
-# will prefer to use local source code checked out in ../../browser-use (if present) instead of pypi browser-use package
-# [tool.uv.sources]
-# bubus = { path = "../bubus", editable = true }
-
+trading = [
+    "chronos-forecasting>=2.2.2",
+    "torch>=2.2.0,<3",
+    "transformers>=4.41.0,<5",
+    "scikit-learn>=1.6.0,<2",
+    "accelerate>=0.30.0",
+    "einops>=0.7.0",
+    "yfinance>=0.2.40",
+    "pyarrow>=15.0.0",
+    "scipy>=1.12.0",
+    "statsmodels>=0.14.0",
+    "seaborn>=0.13.0",
+    "plotly>=5.20.0",
+    "pydantic-settings>=2.3.0",
+    "tqdm>=4.66.0",
+    "pandas-market-calendars>=4.3.0",
+    "numpy>=1.26.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.8.0",
+]
 
 [project.urls]
 Repository = "https://github.com/browser-use/browser-use"
@@ -128,7 +131,7 @@ fix = true
 
 [tool.ruff.lint]
 select = ["ASYNC", "E", "F", "FAST", "I", "PLE"]
-ignore = ["ASYNC109", "E101", "E402", "E501", "F841", "E731", "W291"]  # TODO: determine if adding timeouts to all the unbounded async functions is needed / worth-it so we can un-ignore ASYNC109
+ignore = ["ASYNC109", "E101", "E402", "E501", "F841", "E731", "W291"]
 unfixable = ["E101", "E402", "E501", "F841", "E731"]
 
 [tool.ruff.format]
@@ -150,6 +153,7 @@ venv = ".venv"
 include = [
     "browser_use/**/*.py",
     "!browser_use/**/tests/*.py",
+    "chronos_trading/**/*.py",
     "!browser_use/**/tests.py",
     "browser_use/agent/system_prompt.md",
     "browser_use/agent/system_prompt_no_thinking.md",
@@ -191,15 +195,6 @@ log_level = "DEBUG"
 allow-direct-references = true
 
 [tool.uv]
-# required-environments = [
-#     "sys_platform == 'darwin' and platform_machine == 'arm64'",
-#     "sys_platform == 'darwin' and platform_machine == 'x86_64'",
-#     "sys_platform == 'linux' and platform_machine == 'x86_64'",
-#     "sys_platform == 'linux' and platform_machine == 'aarch64'",
-#     # "sys_platform == 'linux' and platform_machine == 'arm64'",  # no pytorch wheels available yet
-#     "sys_platform == 'win32' and platform_machine == 'x86_64'",
-#     # "sys_platform == 'win32' and platform_machine == 'arm64'",  # no pytorch wheels available yet
-# ]
 dev-dependencies = [
     "ruff>=0.11.2",
     "tokencost>=0.1.16",
@@ -217,7 +212,6 @@ dev-dependencies = [
     "ty>=0.0.1a1",
     "pytest-xdist>=3.7.0",
     "lmnr[all]==0.7.17",
-    # "pytest-playwright-asyncio>=0.7.0",  # not actually needed I think
     "pytest-timeout>=2.4.0",
     "pydantic_settings>=2.10.1"
 ]
